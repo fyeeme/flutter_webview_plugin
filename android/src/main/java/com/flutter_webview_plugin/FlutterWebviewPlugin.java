@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.view.Display;
 import android.webkit.WebStorage;
+import android.widget.Toast;
 import android.widget.FrameLayout;
 import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
@@ -93,6 +94,9 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
                 break;
             case "cleanCache":
                 cleanCache(result);
+                break;
+            case "showToast":
+                showToast(call, result);
                 break;
             default:
                 result.notImplemented();
@@ -267,6 +271,11 @@ public class FlutterWebviewPlugin implements MethodCallHandler, PluginRegistry.A
             }
 
         }
+        result.success(null);
+    }
+    private void showToast(MethodCall call, MethodChannel.Result result){
+        CharSequence text = call.argument("text");
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
         result.success(null);
     }
 

@@ -18,3 +18,4 @@ example/ios/Podfile.lock
 example/ios/Flutter/flutter_export_environment.sh
 android/.project
 android/.settings/
+.history/

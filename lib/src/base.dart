@@ -17,7 +17,7 @@ enum WebViewState { shouldStart, startLoad, finishLoad, abortLoad }
 /// Singleton class that communicate with a Webview Instance
 class FlutterWebviewPlugin {
   factory FlutterWebviewPlugin() {
-    if(_instance == null) {
+    if (_instance == null) {
       const MethodChannel methodChannel = const MethodChannel(_kChannel);
       _instance = FlutterWebviewPlugin.private(methodChannel);
     }
@@ -175,7 +175,8 @@ class FlutterWebviewPlugin {
       'clearCache': clearCache ?? false,
       'hidden': hidden ?? false,
       'clearCookies': clearCookies ?? false,
-      'mediaPlaybackRequiresUserGesture': mediaPlaybackRequiresUserGesture ?? true,
+      'mediaPlaybackRequiresUserGesture':
+          mediaPlaybackRequiresUserGesture ?? true,
       'enableAppScheme': enableAppScheme ?? true,
       'userAgent': userAgent,
       'withZoom': withZoom ?? false,
@@ -248,7 +249,8 @@ class FlutterWebviewPlugin {
   Future<bool> canGoBack() async => await _channel.invokeMethod('canGoBack');
 
   /// Checks if webview can navigate back
-  Future<bool> canGoForward() async => await _channel.invokeMethod('canGoForward');
+  Future<bool> canGoForward() async =>
+      await _channel.invokeMethod('canGoForward');
 
   /// Navigates forward on the Webview.
   Future<Null> goForward() async => await _channel.invokeMethod('forward');
@@ -262,6 +264,12 @@ class FlutterWebviewPlugin {
   // Clears browser cache
   Future<Null> clearCache() async => await _channel.invokeMethod('cleanCache');
 
+  // Clears browser cache
+  Future<Null> showToast(String text) async {
+    final args = <String, dynamic>{'text': text};
+    await _channel.invokeMethod('showToast', args);
+  }
+
   // Reload webview with a url
   Future<Null> reloadUrl(String url, {Map<String, String> headers}) async {
     final args = <String, dynamic>{'url': url};
@@ -274,7 +282,8 @@ class FlutterWebviewPlugin {
   // Clean cookies on WebView
   Future<Null> cleanCookies() async {
     // one liner to clear javascript cookies
-    await evalJavascript('document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });');
+    await evalJavascript(
+        'document.cookie.split(";").forEach(function(c) { document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/"); });');
     return await _channel.invokeMethod('cleanCookies');
   }
 

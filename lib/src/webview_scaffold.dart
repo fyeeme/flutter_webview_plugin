@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_webview_plugin/src/javascript_channel.dart';
 
 import 'base.dart';
@@ -108,6 +109,9 @@ class _WebviewScaffoldState extends State<WebviewScaffold> {
         }
         Navigator.pop(context);
       }
+      if (defaultTargetPlatform == TargetPlatform.android || pop == RoutePopDisposition.bubble) {
+        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      }
     });
 
     if (widget.hidden) {
@@ -160,7 +164,8 @@ class _WebviewScaffoldState extends State<WebviewScaffold> {
               withJavascript: widget.withJavascript,
               clearCache: widget.clearCache,
               clearCookies: widget.clearCookies,
-              mediaPlaybackRequiresUserGesture: widget.mediaPlaybackRequiresUserGesture,
+              mediaPlaybackRequiresUserGesture:
+                  widget.mediaPlaybackRequiresUserGesture,
               hidden: widget.hidden,
               enableAppScheme: widget.enableAppScheme,
               userAgent: widget.userAgent,

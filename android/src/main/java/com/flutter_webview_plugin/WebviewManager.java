@@ -18,6 +18,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 import android.widget.FrameLayout;
 import android.provider.MediaStore;
 
@@ -125,6 +126,7 @@ class WebviewManager {
     BrowserClient webViewClient;
     ResultHandler resultHandler;
     Context context;
+    private long lastPressedAt; //上次点击时间;
     private boolean ignoreSSLErrors = false;
 
     WebviewManager(final Activity activity, final Context context, final List<String> channelNames) {
@@ -149,10 +151,19 @@ class WebviewManager {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
                         case KeyEvent.KEYCODE_BACK:
-                            if (webView.canGoBack()) {
-                                webView.goBack();
-                            } else {
+                            if(lastPressedAt == 0 || (System.currentTimeMillis() - lastPressedAt)/1000 > 1){
+                                lastPressedAt = System.currentTimeMillis();
+
+                                CharSequence text = "再按一次退出";
+                                Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                            }else{
                                 FlutterWebviewPlugin.channel.invokeMethod("onBack", null);
+                            }
+
+                            if (webView.canGoBack()) {
+//                                webView.goBack();
+                            } else {
+//                                FlutterWebviewPlugin.channel.invokeMethod("onBack", null);
                             }
                             return true;
                     }

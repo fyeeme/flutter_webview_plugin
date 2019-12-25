@@ -2,6 +2,11 @@
 
 # Flutter WebView Plugin
 
+**fork from [https://github.com/fluttercommunity/flutter_webview_plugin](https://github.com/fluttercommunity/flutter_webview_plugin)**
+
+## feature
+ update system navigate back logic for android,which provider double click to quit app
+
 [![pub package](https://img.shields.io/pub/v/flutter_webview_plugin.svg)](https://pub.dartlang.org/packages/flutter_webview_plugin)
 
 Plugin that allows Flutter to communicate with a native WebView.
